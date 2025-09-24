@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux Instances KPI Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .kpi-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .kpi-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .kpi-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #2E86AB 0%, #A23B72 100%);
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1>🐧 Linux Instances KPI Dashboard</h1>
+                    <p>Global Linux Server Instances Analytics (2000-2025)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- KPI Summary Cards -->
+        <div class="row mb-5">
+            <div class="col-md-3">
+                <div class="kpi-card text-center">
+                    <div class="kpi-value">{{ kpis.total_instances_2025 }}</div>
+                    <div class="kpi-label">Total Instances (2025)</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="kpi-card text-center">
+                    <div class="kpi-value">{{ kpis.total_growth_25_years }}</div>
+                    <div class="kpi-label">25-Year Growth</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="kpi-card text-center">
+                    <div class="kpi-value">{{ kpis.avg_annual_growth }}</div>
+                    <div class="kpi-label">Avg Annual Growth</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="kpi-card text-center">
+                    <div class="kpi-value">{{ kpis.fastest_growing_region }}</div>
+                    <div class="kpi-label">Fastest Growing Region</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="row">
+            <div class="col-12">
+                <div class="chart-container">
+                    <div id="totalGrowthChart"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <div id="regionalStackedChart"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <div id="marketShareChart"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="chart-container">
+                    <div id="growthRateChart"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="row mt-5">
+            <div class="col-12 text-center">
+                <p class="text-muted">
+                    <small>Data represents estimated Linux server instances worldwide. 
+                    Generated for demonstration purposes.</small>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Render charts
+        var totalGrowthData = {{ charts.total_growth|safe }};
+        Plotly.newPlot('totalGrowthChart', totalGrowthData.data, totalGrowthData.layout, {responsive: true});
+
+        var regionalStackedData = {{ charts.regional_stacked|safe }};
+        Plotly.newPlot('regionalStackedChart', regionalStackedData.data, regionalStackedData.layout, {responsive: true});
+
+        var growthRateData = {{ charts.growth_rate|safe }};
+        Plotly.newPlot('growthRateChart', growthRateData.data, growthRateData.layout, {responsive: true});
+
+        var marketShareData = {{ charts.market_share|safe }};
+        Plotly.newPlot('marketShareChart', marketShareData.data, marketShareData.layout, {responsive: true});
+
+        // Make charts responsive
+        window.addEventListener('resize', function() {
+            Plotly.Plots.resize('totalGrowthChart');
+            Plotly.Plots.resize('regionalStackedChart');
+            Plotly.Plots.resize('growthRateChart');
+            Plotly.Plots.resize('marketShareChart');
+        });
+    </script>
+</body>
+</html>
