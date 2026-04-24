@@ -64,3 +64,15 @@ The application runs on port 12001 by default and is configured to:
 - Accept connections from any host (0.0.0.0)
 - Enable CORS for cross-origin requests
 - Support iframe embedding
+
+## Live Demo
+
+The application is designed to be deployed and accessed via web browser for interactive data exploration.
+
+## Future Enhancements
+
+- Real-time data integration
+- Additional chart types (heatmaps, treemaps)
+- Export functionality (PDF, PNG, CSV)
+- User authentication and personalized dashboards
+- Historical data comparison tools
